@@ -12,10 +12,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Log4j2
 public class App {
 
+  private static final String CHECKSUM_VALID = "0dfd4d695450937bdc9e5c78dad102b7973c7db583830dbc5b0b8dc9afc3aebebad19dbc91b5d62e782ef55089237afc3245c1cd99269e1ba32135e3a4b849b7";
+
   public static void main(String[] args) {
     SpringApplication.run(App.class, args);
-    log.info("CheckSum: {}", getMD5Checksum("HELP.md"));
-    System.exit(0);
+    String checkSumValidation = getMD5Checksum("HELP.md");
+    log.info("CheckSum validation: {}", checkSumValidation);
+
+    if (!CHECKSUM_VALID.equals(checkSumValidation)) {
+      log.error("Exit with checksum");
+      System.exit(0);
+    }
+    log.info("Start to project with checkSumValid");
   }
 
 
