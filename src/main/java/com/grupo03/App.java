@@ -25,19 +25,18 @@ public class App {
       return null;
     }
 
-    String result = "";
-    for (int i = 0; i < b.length; i++) {
-      result += Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+    StringBuilder result = new StringBuilder();
+    for (byte value : b) {
+      result.append(Integer.toString((value & 0xff) + 0x100, 16).substring(1));
     }
-    return result;
+    return result.toString();
   }
 
   public static byte[] createChecksum(String filename) {
-    try {
-      InputStream fis = new FileInputStream(filename);
+    try (InputStream fis = new FileInputStream(filename)) {
 
       byte[] buffer = new byte[1024];
-      MessageDigest complete = MessageDigest.getInstance("MD5");
+      MessageDigest complete = MessageDigest.getInstance("SHA-512");
       int numRead;
       do {
         numRead = fis.read(buffer);
@@ -45,11 +44,10 @@ public class App {
           complete.update(buffer, 0, numRead);
         }
       } while (numRead != -1);
-      fis.close();
       return complete.digest();
     } catch (Exception exception) {
       log.error("Error: {}", exception.getMessage());
-      return null;
+      return new byte[0];
     }
   }
 }
