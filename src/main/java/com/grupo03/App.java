@@ -19,7 +19,7 @@ public class App {
     String checkSumValidation = getMD5Checksum("HELP.md");
     log.info("CheckSum validation: {}", checkSumValidation);
 
-    if (!CHECKSUM_VALID.equals(checkSumValidation)) {
+    if (!Objects.isNull(checkSumValidation) && !CHECKSUM_VALID.equals(checkSumValidation)) {
       log.error("Exit with checksum");
       System.exit(0);
     }
